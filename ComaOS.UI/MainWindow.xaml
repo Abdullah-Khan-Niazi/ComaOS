@@ -4,9 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ComaOS.UI"
+        xmlns:views="clr-namespace:ComaOS.UI.MVVM.Views"
+        xmlns:vm="clr-namespace:ComaOS.UI.MVVM.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="ComaOS" 
+        Height="720" Width="1280"
+        MinHeight="600" MinWidth="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#1a1a2e"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResizeWithGrip">
+    
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+    
     <Grid>
-
+        <!-- Boot Screen (shown when not booted) -->
+        <views:BootView Visibility="{Binding IsBooted, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+        
+        <!-- Desktop (shown when booted) -->
+        <views:DesktopView Visibility="{Binding IsBooted, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
 </Window>

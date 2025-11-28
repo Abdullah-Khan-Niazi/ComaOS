@@ -1,0 +1,133 @@
+<UserControl x:Class="ComaOS.UI.MVVM.Views.BootView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800"
+             Background="#1a1a2e">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Logo and Title -->
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!-- Logo -->
+            <Border Width="120" Height="120" CornerRadius="60">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#7B93FF" Offset="0"/>
+                        <GradientStop Color="#6E5BFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <TextBlock Text="C" FontSize="72" FontWeight="Bold" 
+                           Foreground="White" HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" Margin="0,-5,0,0"/>
+            </Border>
+
+            <!-- Title -->
+            <TextBlock Text="ComaOS" FontSize="48" FontWeight="Light" 
+                       Foreground="White" HorizontalAlignment="Center" 
+                       Margin="0,20,0,5"/>
+            <TextBlock Text="Operating System Simulator" FontSize="14" 
+                       Foreground="#888" HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Boot Progress Section -->
+        <StackPanel Grid.Row="2" Margin="100,40" 
+                    Visibility="{Binding IsBooting, Converter={StaticResource BoolToVisibilityConverter}}">
+            
+            <!-- Progress Bar -->
+            <Border Height="6" CornerRadius="3" Background="#333" Margin="0,0,0,15">
+                <Border CornerRadius="3" HorizontalAlignment="Left"
+                        Width="{Binding BootProgress, Converter={StaticResource PercentToWidthConverter}}">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#7B93FF" Offset="0"/>
+                            <GradientStop Color="#A855F7" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+            </Border>
+
+            <!-- Boot Message -->
+            <TextBlock Text="{Binding BootMessage, Mode=OneWay}" FontSize="12" 
+                       Foreground="#aaa" HorizontalAlignment="Center"/>
+            <TextBlock FontSize="12" Foreground="#666" HorizontalAlignment="Center" Margin="0,5,0,0">
+                <Run Text="{Binding BootProgress, Mode=OneWay}"/><Run Text="%"/>
+            </TextBlock>
+        </StackPanel>
+
+        <!-- Configuration Panel (Before Boot) -->
+        <StackPanel Grid.Row="2" Margin="100,40" HorizontalAlignment="Center"
+                    Visibility="{Binding IsBooting, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+            
+            <!-- Hardware Configuration -->
+            <TextBlock Text="Hardware Configuration" FontSize="16" Foreground="#aaa" 
+                       HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+            <Grid Width="400">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+
+                <!-- RAM -->
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="RAM" Foreground="#888" 
+                           VerticalAlignment="Center"/>
+                <Slider Grid.Row="0" Grid.Column="1" Minimum="512" Maximum="16384" 
+                        Value="{Binding RamSizeMB}" VerticalAlignment="Center"
+                        Style="{StaticResource ModernSliderStyle}"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" 
+                           Foreground="White" HorizontalAlignment="Right">
+                    <Run Text="{Binding RamSizeMB, Mode=OneWay}"/><Run Text=" MB"/>
+                </TextBlock>
+
+                <!-- HDD -->
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Hard Drive" Foreground="#888" 
+                           VerticalAlignment="Center"/>
+                <Slider Grid.Row="1" Grid.Column="1" Minimum="10" Maximum="2048" 
+                        Value="{Binding HddSizeGB}" VerticalAlignment="Center"
+                        Style="{StaticResource ModernSliderStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" 
+                           Foreground="White" HorizontalAlignment="Right">
+                    <Run Text="{Binding HddSizeGB, Mode=OneWay}"/><Run Text=" GB"/>
+                </TextBlock>
+
+                <!-- Cores -->
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="CPU Cores" Foreground="#888" 
+                           VerticalAlignment="Center"/>
+                <Slider Grid.Row="2" Grid.Column="1" Minimum="1" Maximum="16" 
+                        Value="{Binding CoreCount}" VerticalAlignment="Center"
+                        IsSnapToTickEnabled="True" TickFrequency="1"
+                        Style="{StaticResource ModernSliderStyle}"/>
+                <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" 
+                           Foreground="White" HorizontalAlignment="Right">
+                    <Run Text="{Binding CoreCount, Mode=OneWay}"/><Run Text=" Core(s)"/>
+                </TextBlock>
+            </Grid>
+
+            <!-- Boot Button -->
+            <Button Content="Boot ComaOS" Command="{Binding BootCommand}" 
+                    Margin="0,40,0,0" Padding="40,15"
+                    FontSize="16" FontWeight="SemiBold"
+                    Style="{StaticResource BootButtonStyle}"/>
+        </StackPanel>
+
+        <!-- Version -->
+        <TextBlock Grid.Row="3" Text="Version 1.0.0" FontSize="11" 
+                   Foreground="#444" HorizontalAlignment="Center" 
+                   VerticalAlignment="Bottom" Margin="0,0,0,20"/>
+    </Grid>
+</UserControl>

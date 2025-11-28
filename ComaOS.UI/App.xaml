@@ -2,8 +2,22 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ComaOS.UI"
-             StartupUri="MainWindow.xaml">
+             xmlns:converters="clr-namespace:ComaOS.UI.Assets"
+             Startup="Application_Startup">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Assets/Colors.xaml"/>
+                <ResourceDictionary Source="Assets/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!-- Converters -->
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+            <converters:PercentToWidthConverter x:Key="PercentToWidthConverter"/>
+            <converters:SliderValueToWidthConverter x:Key="SliderValueToWidthConverter"/>
+            <converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

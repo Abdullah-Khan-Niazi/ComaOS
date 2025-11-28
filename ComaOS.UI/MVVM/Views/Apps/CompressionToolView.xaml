@@ -1,0 +1,163 @@
+<UserControl x:Class="ComaOS.UI.MVVM.Views.Apps.CompressionToolView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="450"
+             Background="#1a1a2a">
+    
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Tab Header -->
+        <Border Grid.Row="0" Background="#252535" CornerRadius="8" Padding="5" Margin="0,0,0,15">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <RadioButton x:Name="CompressTab" Content="📦 Compress" IsChecked="True" 
+                             GroupName="Tabs" Click="Tab_Click"
+                             Style="{StaticResource {x:Type ToggleButton}}"
+                             Background="Transparent" Foreground="#ccc" Padding="20,8"
+                             BorderThickness="0" Cursor="Hand"/>
+                <RadioButton x:Name="ExtractTab" Content="📂 Extract" 
+                             GroupName="Tabs" Click="Tab_Click"
+                             Style="{StaticResource {x:Type ToggleButton}}"
+                             Background="Transparent" Foreground="#ccc" Padding="20,8"
+                             BorderThickness="0" Cursor="Hand"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Compress Panel -->
+        <StackPanel x:Name="CompressPanel" Grid.Row="1">
+            <!-- Source Files -->
+            <TextBlock Text="Files to Compress" Foreground="#888" FontSize="12" Margin="0,0,0,8"/>
+            <Border Background="#252535" CornerRadius="4" Padding="10" MinHeight="80">
+                <Grid>
+                    <ListBox x:Name="FilesToCompress" Background="Transparent" BorderThickness="0"
+                             MaxHeight="100">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Foreground" Value="#ccc"/>
+                                <Setter Property="Padding" Value="5,3"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                    
+                    <TextBlock x:Name="NoFilesText" Text="Click 'Add Files' to select files" 
+                               Foreground="#555" FontSize="12" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <Button Content="+ Add Files" Click="AddFiles_Click"
+                        Background="#3a3a4a" Foreground="#ccc" Padding="12,6" 
+                        BorderThickness="0" Margin="0,0,5,0" Cursor="Hand"/>
+                <Button Content="Clear" Click="ClearFiles_Click"
+                        Background="#3a3a4a" Foreground="#888" Padding="12,6" 
+                        BorderThickness="0" Cursor="Hand"/>
+            </StackPanel>
+            
+            <!-- Options -->
+            <TextBlock Text="Options" Foreground="#888" FontSize="12" Margin="0,20,0,8"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                    <TextBlock Text="Format" Foreground="#666" FontSize="11" Margin="0,0,0,5"/>
+                    <ComboBox x:Name="FormatCombo" Background="#252535" Foreground="#ccc" 
+                              Padding="8" BorderBrush="#3a3a4a" SelectedIndex="0">
+                        <ComboBoxItem Content=".zip"/>
+                        <ComboBoxItem Content=".tar.gz"/>
+                        <ComboBoxItem Content=".7z"/>
+                        <ComboBoxItem Content=".rar"/>
+                    </ComboBox>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Compression Level" Foreground="#666" FontSize="11" Margin="0,0,0,5"/>
+                    <ComboBox x:Name="LevelCombo" Background="#252535" Foreground="#ccc" 
+                              Padding="8" BorderBrush="#3a3a4a" SelectedIndex="1">
+                        <ComboBoxItem Content="Fast (Low)"/>
+                        <ComboBoxItem Content="Normal"/>
+                        <ComboBoxItem Content="Maximum"/>
+                        <ComboBoxItem Content="Ultra"/>
+                    </ComboBox>
+                </StackPanel>
+            </Grid>
+            
+            <!-- Archive Name -->
+            <TextBlock Text="Archive Name" Foreground="#666" FontSize="11" Margin="0,15,0,5"/>
+            <TextBox x:Name="ArchiveNameInput" Text="archive" Background="#252535" Foreground="#ccc" 
+                     Padding="10,8" BorderBrush="#3a3a4a"/>
+        </StackPanel>
+        
+        <!-- Extract Panel -->
+        <StackPanel x:Name="ExtractPanel" Grid.Row="1" Visibility="Collapsed">
+            <TextBlock Text="Archive to Extract" Foreground="#888" FontSize="12" Margin="0,0,0,8"/>
+            
+            <Border Background="#252535" CornerRadius="4" Padding="15">
+                <Grid>
+                    <StackPanel x:Name="NoArchivePanel" HorizontalAlignment="Center">
+                        <TextBlock Text="📦" FontSize="36" HorizontalAlignment="Center" Opacity="0.5"/>
+                        <TextBlock Text="No archive selected" FontSize="12" Foreground="#555" 
+                                   HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                    </StackPanel>
+                    
+                    <StackPanel x:Name="ArchiveInfoPanel" Visibility="Collapsed">
+                        <TextBlock x:Name="ArchiveNameText" Text="" FontSize="14" Foreground="#ccc"/>
+                        <TextBlock x:Name="ArchiveSizeText" Text="" FontSize="11" Foreground="#666" Margin="0,3,0,0"/>
+                        <TextBlock x:Name="ArchiveContentsText" Text="" FontSize="11" Foreground="#60a5fa" Margin="0,3,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+            <Button Content="📂 Select Archive" Click="SelectArchive_Click"
+                    Background="#3a3a4a" Foreground="#ccc" Padding="12,6" 
+                    BorderThickness="0" Margin="0,10,0,0" Cursor="Hand"/>
+            
+            <TextBlock Text="Extract To" Foreground="#666" FontSize="11" Margin="0,20,0,5"/>
+            <TextBox x:Name="ExtractPathInput" Text="/home/user/extracted/" Background="#252535" Foreground="#ccc" 
+                     Padding="10,8" BorderBrush="#3a3a4a"/>
+        </StackPanel>
+        
+        <!-- Progress Area -->
+        <Border x:Name="ProgressPanel" Grid.Row="2" Background="#252535" CornerRadius="8" 
+                Padding="15" Margin="0,15,0,0" Visibility="Collapsed">
+            <StackPanel>
+                <TextBlock x:Name="ProgressTitle" Text="Compressing..." FontSize="14" 
+                           Foreground="#60a5fa" FontWeight="SemiBold"/>
+                <ProgressBar x:Name="ProgressBar" Height="8" Minimum="0" Maximum="100" Value="0"
+                             Background="#1a1a2a" Foreground="#60a5fa" Margin="0,10,0,5"/>
+                <Grid>
+                    <TextBlock x:Name="ProgressFile" Text="Processing: file.txt" FontSize="11" Foreground="#666"/>
+                    <TextBlock x:Name="ProgressPercent" Text="0%" FontSize="11" Foreground="#888" HorizontalAlignment="Right"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+        
+        <!-- Results Area -->
+        <Border x:Name="ResultsPanel" Grid.Row="2" Background="#252535" CornerRadius="8" 
+                Padding="15" Margin="0,15,0,0" Visibility="Collapsed">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock x:Name="ResultIcon" Text="✅" FontSize="36" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="ResultTitle" Text="Compression Complete!" FontSize="14" 
+                           Foreground="#22c55e" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,10,0,5"/>
+                <TextBlock x:Name="ResultDetails" Text="" FontSize="12" Foreground="#888" 
+                           HorizontalAlignment="Center" TextAlignment="Center"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Action Button -->
+        <Button x:Name="ActionButton" Grid.Row="3" Content="📦 Compress" Click="Action_Click"
+                Background="#60a5fa" Foreground="#fff" Padding="20,12" 
+                BorderThickness="0" FontSize="14" Cursor="Hand" Margin="0,15,0,0"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,109 @@
+<UserControl x:Class="ComaOS.UI.MVVM.Views.Apps.CalendarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400"
+             Background="#1a1a2a">
+    
+    <Grid>
+        <!-- Add Event Popup -->
+        <Popup x:Name="AddEventPopup" Placement="Center" StaysOpen="False">
+            <Border Background="#252535" CornerRadius="8" Padding="20" 
+                    BorderBrush="#3a3a4a" BorderThickness="1">
+                <StackPanel Width="280">
+                    <TextBlock Text="📝 Add Event" FontSize="16" Foreground="#fff" 
+                               Margin="0,0,0,15" FontWeight="SemiBold"/>
+                    
+                    <TextBlock Text="Event Title" Foreground="#888" FontSize="11" Margin="0,0,0,5"/>
+                    <TextBox x:Name="EventTitleInput" Background="#1a1a2a" Foreground="#ccc" 
+                             Padding="10,8" BorderBrush="#3a3a4a" FontSize="13"/>
+                    
+                    <TextBlock Text="Time" Foreground="#888" FontSize="11" Margin="0,15,0,5"/>
+                    <TextBox x:Name="EventTimeInput" Background="#1a1a2a" Foreground="#ccc" 
+                             Padding="10,8" BorderBrush="#3a3a4a" FontSize="13" Text="09:00"/>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                        <Button Content="Cancel" Click="CancelEvent_Click"
+                                Background="#3a3a4a" Foreground="#ccc" Padding="15,8" 
+                                BorderThickness="0" Margin="0,0,10,0" Cursor="Hand"/>
+                        <Button Content="Add Event" Click="SaveEvent_Click"
+                                Background="#60a5fa" Foreground="#fff" Padding="15,8" 
+                                BorderThickness="0" Cursor="Hand"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Popup>
+        
+        <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Month/Year Navigation -->
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button x:Name="PrevMonthButton" Content="◀" Click="PrevMonthButton_Click"
+                    Background="#3a3a4a" Foreground="#ccc" Width="35" Height="35" 
+                    BorderThickness="0" FontSize="14" Cursor="Hand"/>
+            
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                <TextBlock x:Name="MonthYearText" Text="November 2025" FontSize="20" 
+                           Foreground="#fff" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                <Button x:Name="TodayButton" Content="Today" Click="TodayButton_Click"
+                        Background="Transparent" Foreground="#60a5fa" BorderThickness="0" 
+                        Padding="10,2" Cursor="Hand" FontSize="11" HorizontalAlignment="Center"/>
+            </StackPanel>
+            
+            <Button x:Name="NextMonthButton" Grid.Column="2" Content="▶" Click="NextMonthButton_Click"
+                    Background="#3a3a4a" Foreground="#ccc" Width="35" Height="35" 
+                    BorderThickness="0" FontSize="14" Cursor="Hand"/>
+        </Grid>
+        
+        <!-- Day Headers -->
+        <UniformGrid Grid.Row="1" Columns="7" Margin="0,0,0,5">
+            <TextBlock Text="Sun" Foreground="#f87171" FontSize="12" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+            <TextBlock Text="Mon" Foreground="#888" FontSize="12" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+            <TextBlock Text="Tue" Foreground="#888" FontSize="12" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+            <TextBlock Text="Wed" Foreground="#888" FontSize="12" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+            <TextBlock Text="Thu" Foreground="#888" FontSize="12" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+            <TextBlock Text="Fri" Foreground="#888" FontSize="12" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+            <TextBlock Text="Sat" Foreground="#60a5fa" FontSize="12" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+        </UniformGrid>
+        
+        <!-- Calendar Grid -->
+        <UniformGrid x:Name="CalendarGrid" Grid.Row="2" Columns="7" Rows="6"/>
+        
+        <!-- Events Section -->
+        <Border Grid.Row="3" Background="#252535" CornerRadius="8" Padding="12" Margin="0,15,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Grid Grid.Row="0" Margin="0,0,0,10">
+                    <TextBlock x:Name="SelectedDateText" Text="📅 Events for Today" FontSize="14" 
+                               Foreground="#ccc" FontWeight="SemiBold"/>
+                    <Button x:Name="AddEventButton" Content="+ Add" Click="AddEventButton_Click"
+                            Background="#60a5fa" Foreground="#fff" Padding="10,3" 
+                            BorderThickness="0" HorizontalAlignment="Right" Cursor="Hand" FontSize="11"/>
+                </Grid>
+                
+                <ScrollViewer Grid.Row="1" MaxHeight="120" VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="EventsList"/>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+    </Grid>
+</UserControl>
