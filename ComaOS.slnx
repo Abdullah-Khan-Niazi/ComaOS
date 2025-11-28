@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ComaOS.Console/ComaOS.Console.csproj" />
+  <Project Path="ComaOS.Core/ComaOS.Core.csproj" />
+  <Project Path="ComaOS.UI/ComaOS.UI.csproj" />
+</Solution>
